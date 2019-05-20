@@ -30,7 +30,7 @@ export default class CharacterService {
     }
 
     get Characters() {
-        return _store.characters.map(c => new Character(c))
+        return _state.characters.map(c => new Character(c))
     }
 
     getApiCharacters() {
