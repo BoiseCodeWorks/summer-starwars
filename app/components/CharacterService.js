@@ -1,15 +1,25 @@
-//Private
+import Character from '../models/Character.js'
 
-let _store = {
-    characters: []
+//Private
+let _api = new axios.create({
+    baseURL: 'http://hp-api.herokuapp.com/api'
+})
+
+let _sandboxApi = new axios.create({
+    baseURL: 'http://bcw-sandbox.herokuapp.com/api'
+})
+
+
+let _state = {
+    characters: [],
 }
 let _subscribers = {
     characters: []
 }
 
 function setState(propName, data) {
-    _store[propName] = data,
-        _subscribers[propName].forEach(fn => fn())
+    _state[propName] = data
+    _subscribers[propName].forEach(fn => fn())
 }
 
 
@@ -22,4 +32,17 @@ export default class CharacterService {
     get Characters() {
         return _store.characters.map(c => new Character(c))
     }
+
+    getApiCharacters() {
+        _api.get('characters')
+            .then(response => {
+                let data = response.data.map(rawData => new Character(rawData))
+                setState('characters', data)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+
+
 }

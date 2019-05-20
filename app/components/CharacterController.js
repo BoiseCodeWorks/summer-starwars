@@ -15,5 +15,10 @@ function _drawCharacters() {
 }
 //Public
 export default class CharacterController {
-
+    constructor() {
+        //register subscribers
+        _charService.addSubscriber('characters', _drawCharacters)
+        //fetch data
+        _charService.getApiCharacters();
+    }
 }
